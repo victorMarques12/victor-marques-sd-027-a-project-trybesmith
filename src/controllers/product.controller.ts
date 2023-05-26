@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
 import productServe from '../services/product.serve';
-import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 async function create(req: Request, res: Response) {
-  const { id, name, price, orderId } = req.body;
+  const newProduct = req.body;
 
-  const response = await productServe.create({ id, name, price, orderId });
+  const response = await productServe.create(newProduct);
 
-  if (response.status !== 'SUCCESSFUL') {
-    return res.status(mapStatusHTTP(response.status)).json(response.data);
-  }
-
-  res.status(201).json(response.data);
+  res.status(201).json(response);
+}
+async function getAll(_req: Request, res: Response) {
+  const Products = await productServe.getAllProducts();
+  res.status(200).json(Products);
 }
 
 export default {
   create,
+  getAll,
 };

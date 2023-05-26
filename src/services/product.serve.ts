@@ -1,37 +1,18 @@
-import { ServiceResponse } from 'src/types/service.response';
+import ProductModel,
+{ ProductSequelizeModel } from '../database/models/product.model';
+import { Product } from '../types/Product'; 
 
-import ProductModel, { ProductInputtableTypes } from 'src/database/models/product.model';
-import { Product } from '../types/Product';
-
-function valida({
-  name,
-  price,
-  orderId,
-}: ProductInputtableTypes): string | null {
-  if (!name) return 'Name is required';
-  if (!price) return 'Price id required';
-  if (!orderId) return 'Order Id is required';
-  
-  return null;
+async function create({ name, price, orderId }: Product):Promise<ProductSequelizeModel> {
+  const tProduct = await ProductModel.create({ name, price, orderId });
+  return tProduct;
 }
 
-async function create(product:ProductInputtableTypes): Promise<ServiceResponse<Product>> {
-  let responseService: ServiceResponse<Product>;
-
-  const error = valida(product);
-
-  if (error) {
-    responseService = { status: 'INVALID_DATA', data: { message: error } };
-    return responseService;
-  }
-
-  const newProduct = await ProductModel.create(product);
-
-  responseService = { status: 'SUCCESSFUL', data: newProduct.dataValues };
-
-  return responseService;
+async function getAllProducts():Promise<ProductSequelizeModel[]> {
+  const products = await ProductModel.findAll();
+  return products;
 }
 
 export default {
   create,
+  getAllProducts,
 };

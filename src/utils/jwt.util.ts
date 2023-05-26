@@ -1,28 +1,17 @@
-/* import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET || 'secret';
 
-type TokenPayload = {
-  id: number,
-  email: string,
+const configJwt: SignOptions = {
+  expiresIn: '1d',
+  algorithm: 'HS256',
 };
 
-function sign(payload: TokenPayload): string {
-  const token = jwt.sign(payload, secret);
-  return token;
-}
+const LoginVerifica = (token: string): JwtPayload | string => jwt.verify(token, secret);
 
-function verify(token: string): TokenPayload { */ 
-/* Ao utilizarmos Type Assertion para `TokenPayload` aqui, estamos garantindo que 
-  a função `jwt.verify` sempre retornará o `id` e o `email`. Nesse caso, irá, mas
-  vale lembrar que, se não retornar, perdemos a proteção da tipagem aqui. Usamos
-  a ferramenta com responsabilidade! */
-/*   const data = jwt.verify(token, secret) as TokenPayload; 
-  return data; 
-}
+const newToken = (payload: JwtPayload): string => jwt.sign({ payload }, secret, configJwt);
 
 export default {
-  sign,
-  verify,
-}; 
-*/ 
+  LoginVerifica,
+  newToken,
+};
