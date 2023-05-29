@@ -2,7 +2,8 @@ import { OrderWithProduct } from 'src/types/OrderWithProduct';
 import ProductModel, { ProductSequelizeModel } from '../database/models/product.model';
 import OrderModel, { OrderSequelizeModel } from '../database/models/order.model';
 
-const getOrdersWithProducts = async (): Promise<OrderWithProduct[]> => {
+const getOrdersWithProducts = async ():
+Promise<OrderWithProduct[]> => {
   const orders: OrderSequelizeModel[] = await OrderModel.findAll();
   const ordersProducts = orders.map(
     async (order: OrderSequelizeModel): Promise<OrderWithProduct> => {
